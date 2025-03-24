@@ -4,15 +4,35 @@
   description: >-
     Is your service ready for production?
   filter:
-    - kind:
-        - Component
-      spec.lifecycle:
-        - production
+    kind:
+      - Component
+    spec.lifecycle:
+      - production
   levels:
     - ordinal: 1
       name: Minimum
       checks:
-        - id: sonarqube-enabled
-          name: SonarQube Enabled
+        - id: monitoring-enabled
+          name: Monitoring Enabled
           description: >-
-            SonarQube is enabled (detected via annotation).
+            Monitoring is enabled - detected via annotation for Grafana.
+          filter:
+            kind:
+              - Component
+    - ordinal: 2
+      name: Recommended
+      checks:
+        - id: quality-enabled
+          name: Quality Enabled
+          description: >-
+            Quality is enabled - detected via annotation for SonarQube.
+          filter:
+            kind:
+              - Component
+        - id: alerting-enabled
+          name: Alerting Enabled
+          description: >-
+            Alerting is enabled - detected via annotation for Grafana.
+          filter:
+            kind:
+              - Component

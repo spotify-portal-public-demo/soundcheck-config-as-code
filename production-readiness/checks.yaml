@@ -1,8 +1,28 @@
-- id: sonarqube-enabled
-  name: SonarQube Enabled
+- id: monitoring-enabled
+  name: Monitoring Enabled
   ownerEntityRef: group:default/devex
   description: >-
-    SonarQube is enabled (detected via annotation).
+    Monitoring is enabled - detected via annotation for Grafana.
+  pathResolver: jsonata
+  rule:
+    all:
+      - factRef: catalog:default/entity_descriptor
+        path: $keys($.metadata.annotations)
+        operator: contains
+        value: grafana/dashboard-selector
+  filter:
+    kind:
+      - Component
+  passedMessage: >-
+    Monitoring is enabled!
+  failedMessage: >-
+    Could not detect monitoring, please enable for this service and add the
+    following annotation to catalog-info.yaml: `grafana/dashboard-selector`.
+- id: quality-enabled
+  name: Quality Enabled
+  ownerEntityRef: group:default/devex
+  description: >-
+    Quality is enabled - detected via annotation for SonarQube.
   pathResolver: jsonata
   rule:
     all:
@@ -11,16 +31,30 @@
         operator: contains
         value: sonarqube.org/project-key
   filter:
-    - kind:
-        - Component
+    kind:
+      - Component
   passedMessage: >-
-    SonarQube is enabled!
+    Quality is enabled!
   failedMessage: >-
-    Could not detect SonarQube, please enable for this service and add the
+    Could not detect quality, please enable for this service and add the
     following annotation to catalog-info.yaml: `sonarqube.org/project-key`.
-  schedule:
-    frequency:
-      hours: 1
-    filter:
-      - kind:
-          - Component
+- id: alerting-enabled
+  name: Alerting Enabled
+  ownerEntityRef: group:default/devex
+  description: >-
+    Alerting is enabled - detected via annotation for Grafana.
+  pathResolver: jsonata
+  rule:
+    all:
+      - factRef: catalog:default/entity_descriptor
+        path: $keys($.metadata.annotations)
+        operator: contains
+        value: grafana/alert-label-selector
+  filter:
+    kind:
+      - Component
+  passedMessage: >-
+    Alerting is enabled!
+  failedMessage: >-
+    Could not detect alerting, please enable for this service and add the
+    following annotation to catalog-info.yaml: `grafana/alert-label-selector`.
