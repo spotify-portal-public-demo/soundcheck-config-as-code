@@ -1,8 +1,26 @@
-- id: sonarqube-enabled
-  name: SonarQube Enabled
+- id: monitoring-configured
   ownerEntityRef: group:default/devex
-  description: >-
-    SonarQube is enabled (detected via annotation).
+  name: Monitoring Configured
+  description: Monitoring is configured - detected via annotation for Grafana.
+  pathResolver: jsonata
+  rule:
+    all:
+      - factRef: catalog:default/entity_descriptor
+        path: $keys($.metadata.annotations)
+        operator: contains
+        value: grafana/dashboard-selector
+  filter:
+    - kind:
+        - component
+      spec.lifecycle:
+        - production
+  passedMessage: Monitoring is configured!
+  failedMessage: Could not detect monitoring, please enable for this component and add the following annotation - `grafana/dashboard-selector`.
+
+- id: quality-configured
+  ownerEntityRef: group:default/devex
+  name: Quality Configured
+  description: Quality is configured - detected via annotation for SonarQube.
   pathResolver: jsonata
   rule:
     all:
@@ -12,15 +30,27 @@
         value: sonarqube.org/project-key
   filter:
     - kind:
-        - Component
-  passedMessage: >-
-    SonarQube is enabled!
-  failedMessage: >-
-    Could not detect SonarQube, please enable for this service and add the
-    following annotation to catalog-info.yaml: `sonarqube.org/project-key`.
-  schedule:
-    frequency:
-      hours: 1
-    filter:
-      - kind:
-          - Component
+        - component
+      spec.lifecycle:
+        - production
+  passedMessage: Quality is configured!
+  failedMessage: Could not detect quality, please enable for this component and add the following annotation - `sonarqube.org/project-key`.
+
+- id: alerting-configured
+  ownerEntityRef: group:default/devex
+  name: Alerting Configured
+  description: Alerting is configured - detected via annotation for Grafana.
+  pathResolver: jsonata
+  rule:
+    all:
+      - factRef: catalog:default/entity_descriptor
+        path: $keys($.metadata.annotations)
+        operator: contains
+        value: grafana/alert-label-selector
+  filter:
+    - kind:
+        - component
+      spec.lifecycle:
+        - production
+  passedMessage: Alerting is configured!
+  failedMessage: Could not detect alerting, please enable for this component and add the following annotation - `grafana/alert-label-selector`.

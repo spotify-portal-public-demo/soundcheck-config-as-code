@@ -1,18 +1,40 @@
 - id: production-readiness
   name: Production Readiness
+  description: Is your service ready for production?
   ownerEntityRef: group:default/devex
-  description: >-
-    Is your service ready for production?
-  filter:
-    - kind:
-        - Component
-      spec.lifecycle:
-        - production
   levels:
     - ordinal: 1
       name: Minimum
       checks:
-        - id: sonarqube-enabled
-          name: SonarQube Enabled
-          description: >-
-            SonarQube is enabled (detected via annotation).
+        - id: monitoring-configured
+          name: Monitoring Configured
+          description: Monitoring is configured - detected via annotation for Grafana.
+          filter:
+            - kind:
+                - component
+              spec.lifecycle:
+                - production
+    - ordinal: 2
+      name: Recommended
+      checks:
+        - id: quality-configured
+          name: Quality Configured
+          description: Quality is configured - detected via annotation for SonarQube.
+          filter:
+            - kind:
+                - component
+              spec.lifecycle:
+                - production
+        - id: alerting-configured
+          name: Alerting Configured
+          description: Alerting is configured - detected via annotation for Grafana.
+          filter:
+            - kind:
+                - component
+              spec.lifecycle:
+                - production
+  filter:
+    - kind:
+        - component
+      spec.lifecycle:
+        - production
