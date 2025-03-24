@@ -1,0 +1,18 @@
+- id: production-readiness
+  name: Production Readiness
+  ownerEntityRef: group:default/devex
+  description: >-
+    Is your service ready for production?
+  filter:
+    - kind:
+        - Component
+      spec.lifecycle:
+        - production
+  levels:
+    - ordinal: 1
+      name: Minimum
+      checks:
+        - id: sonarqube-enabled
+          name: SonarQube Enabled
+          description: >-
+            SonarQube is enabled (detected via annotation).

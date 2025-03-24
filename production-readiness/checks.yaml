@@ -1,0 +1,26 @@
+- id: sonarqube-enabled
+  name: SonarQube Enabled
+  ownerEntityRef: group:default/devex
+  description: >-
+    SonarQube is enabled (detected via annotation).
+  pathResolver: jsonata
+  rule:
+    all:
+      - factRef: catalog:default/entity_descriptor
+        path: $keys($.metadata.annotations)
+        operator: contains
+        value: sonarqube.org/project-key
+  filter:
+    - kind:
+        - Component
+  passedMessage: >-
+    SonarQube is enabled!
+  failedMessage: >-
+    Could not detect SonarQube, please enable for this service and add the
+    following annotation to catalog-info.yaml: `sonarqube.org/project-key`.
+  schedule:
+    frequency:
+      hours: 1
+    filter:
+      - kind:
+          - Component
