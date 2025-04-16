@@ -1,0 +1,60 @@
+- id: recommended-github-settings
+  name: Recommended GitHub Settings
+  ownerEntityRef: group:default/devex
+  description: >-
+    This track defines recommended GitHub settings used at Spotify.
+  filter:
+    kind:
+      - component
+  levels:
+    - ordinal: 1
+      name: Minimum
+      checks:
+        - id: repository-has-owner
+          name: Repository Has Owner
+          description: >-
+            Repsitory has an owner defined.
+          filter:
+            kind:
+              - Component
+        - id: force-pushes-disabled
+          name: Force Pushes Disabled
+          description: >-
+            Repository does not allow force pushes to the default branch.
+          filter:
+            kind:
+              - Component
+    - ordinal: 2
+      name: Recommended
+      checks:
+        - id: pull-request-requires-review
+          name: Pull Request Requires Review
+          description: >-
+            Pull requests to the default branch require at least one review.
+          filter:
+            kind:
+              - Component
+        - id: deletions-are-forbidden
+          name: Deletions Are Forbidden
+          description: >-
+            Default branch cannot be deleted.
+          filter:
+            kind:
+              - Component
+        - id: branch-is-not-locked
+          name: Branch Is Not Locked
+          description: >-
+            Default branch is not locked.
+          filter:
+            kind:
+              - Component
+    - ordinal: 3
+      name: Outstanding
+      checks:
+        - id: admins-must-follow-rules
+          name: Admins Must Follow Rules
+          description: >-
+            Administrators cannot bypass branch rules.
+          filter:
+            kind:
+              - Component
