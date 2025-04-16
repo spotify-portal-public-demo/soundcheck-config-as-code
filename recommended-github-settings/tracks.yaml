@@ -1,0 +1,55 @@
+- id: recommended-github-settings
+  name: Recommended GitHub Settings
+  description: This track defines a series of checks to help teams adopt recommended GitHub repository settings.
+  ownerEntityRef: group:default/devex
+  levels:
+    - ordinal: 1
+      name: Minimum
+      checks:
+        - id: repository-has-owner
+          name: Repository Has Owner
+          description: Repository has an owner defined.
+          filter:
+            - kind:
+                - component
+        - id: force-pushes-disabled
+          name: Force Pushes Disabled
+          description: Repository does not allow force pushes to the default branch.
+          filter:
+            - kind:
+                - component
+    - ordinal: 2
+      name: Recommended
+      checks:
+        - id: pull-request-requires-review
+          name: Pull Request Requires Review
+          description: Pull requests to the default branch require at least one review.
+          filter:
+            - kind:
+                - component
+        - id: deletions-are-forbidden
+          name: Deletions Are Forbidden
+          description: Default branch cannot be deleted.
+          filter:
+            - kind:
+                - component
+        - id: branch-is-not-locked
+          name: Branch Is Not Locked
+          description: Default branch is not locked.
+          filter:
+            - kind:
+                - component
+    - ordinal: 3
+      name: Outstanding
+      checks:
+        - id: admins-must-follow-rules
+          name: Admins Must Follow Rules
+          description: Repository admins cannot bypass branch rules.
+          filter:
+            - kind:
+                - component
+  filter:
+    - kind:
+        - component
+  badge:
+    type: medal

@@ -1,0 +1,95 @@
+- id: repository-has-owner
+  ownerEntityRef: group:default/devex
+  name: Repository Has Owner
+  description: Repository has an owner defined.
+  rule:
+    all:
+      - factRef: github:default/repository_details
+        path: $.owner.login
+        operator: matches
+        value: .+
+  filter:
+    - kind:
+        - component
+  passedMessage: Repository has an owner - [{{ fact.data.owner.login }}]({{ fact.data.owner.html_url }}).
+  failedMessage: Repository has no owner.
+
+- id: force-pushes-disabled
+  ownerEntityRef: group:default/devex
+  name: Force Pushes Disabled
+  description: Repository does not allow force pushes to the default branch.
+  rule:
+    all:
+      - factRef: github:default/branch_protections
+        path: $.allow_force_pushes.enabled
+        operator: equal
+        value: false
+  filter:
+    - kind:
+        - component
+  passedMessage: Force pushes are not allowed.
+  failedMessage: Force pushes are allowed.
+
+- id: pull-request-requires-review
+  ownerEntityRef: group:default/devex
+  name: Pull Request Requires Review
+  description: Pull requests to the default branch require at least one review.
+  rule:
+    all:
+      - factRef: github:default/branch_protections
+        path: $.required_pull_request_reviews.required_approving_review_count
+        operator: greaterThan
+        value: 0
+  filter:
+    - kind:
+        - component
+  passedMessage: PRs require {{ fact.data.required_pull_request_reviews.required_approving_review_count }} review.
+  failedMessage: PRs do not require a review.
+
+- id: deletions-are-forbidden
+  ownerEntityRef: group:default/devex
+  name: Deletions Are Forbidden
+  description: Default branch cannot be deleted.
+  rule:
+    all:
+      - factRef: github:default/branch_protections
+        path: $.allow_deletions.enabled
+        operator: equal
+        value: false
+  filter:
+    - kind:
+        - component
+  passedMessage: Default branch cannot be deleted.
+  failedMessage: Default branch can be deleted.
+
+- id: branch-is-not-locked
+  ownerEntityRef: group:default/devex
+  name: Branch Is Not Locked
+  description: Default branch is not locked.
+  rule:
+    all:
+      - factRef: github:default/branch_protections
+        path: $.lock_branch.enabled
+        operator: equal
+        value: false
+  filter:
+    - kind:
+        - component
+  passedMessage: Default branch is not locked.
+  failedMessage: Default branch is locked.
+
+- id: admins-must-follow-rules
+  ownerEntityRef: group:default/devex
+  name: Admins Must Follow Rules
+  description: Repository admins cannot bypass branch rules.
+  rule:
+    all:
+      - factRef: github:default/branch_protections
+        path: $.enforce_admins.enabled
+        operator: equal
+        value: true
+  filter:
+    - kind:
+        - component
+  passedMessage: Admins cannot bypass branch rules.
+  failedMessage: Admins can bypass branch rules.
